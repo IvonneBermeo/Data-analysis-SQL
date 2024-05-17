@@ -1,0 +1,77 @@
+USE [NORTHWIND]
+GO
+/*
+	MOSTRAR LAS ORDENES QUE INDISTINTAMENTE 
+	TENGAN DETALLE DE ORDENES
+	EL REPORTE DEBE SALIR DE LA SIGUIENTE MANERA:
+		ORDER ID
+		CUSTOMER ID
+		NOMBRE CLIENTE
+		EMPLOYEE ID
+		NOMBRE EMPLEADO,
+		PRODUCT ID
+		NOMBRE PRODUCTO
+		QUANTITY
+	
+	NOTA: EN ESTA CONSULTA SE DEBERA USAR JOIN Y TAMBIEN 
+	SUBQUERYS. USTED DEBERA DETERMINAR SI ES INNER O LEFT
+	DEBERA JUSTIFICAR SU RESPUESTA EN EL CASO SE ESCOGA INNER O
+	LEFT
+
+
+CALIFICACION: 
+	10 PTOS LOS SUBQUERYS
+	5 PTOS EL TIPO DE JOIN
+	5 PTOS LA JUSTIFICACION 
+
+TEST2_NOMBRE_APELLIDOS
+*/
+SELECT
+  O.OrderID,
+  O.CustomerID AS Customer_ID,
+  C.CustomerName AS Nombre_Cliente,
+  O.EmployeeID,
+  E.FirstName AS Nombre_Empleado,
+  D.ProductID ,
+  P.ProductName AS Nombre_Producto,
+  D.Quantity AS Cantidad 
+FROM
+  Orders AS O
+LEFT JOIN
+  OrderDetails AS D 
+  ON O.OrderID = D.OrderID
+LEFT JOIN
+  Customers AS C 
+  ON O.CustomerID = C.CustomerID
+LEFT JOIN
+  Employees AS E 
+  ON O.EmployeeID = E.EmployeeID
+LEFT JOIN
+  Products AS P 
+  ON d.ProductID = P.ProductID;
+
+  
+--JUSTIFICACIÓN 
+/*
+Se utilizó LEFT JOIN porque el enunciado dice indistintamente la tabla ordenes con la tabla detalle de ordenes.
+*/
+	
+/* PROBANDO DE OTRA FORMA CON SUBQUERYS  */
+
+  SELECT 
+	A.OrderID,
+	A.CustomerID,
+	(SELECT CustomerName FROM [dbo].[Customers] AS C
+		WHERE C.[CustomerID]=A.[CustomerID]) AS Nombre_Cliente,
+	(SELECT [EmployeeID] FROM [dbo].[Employees] AS D
+		WHERE D.[EmployeeID]=A.[EmployeeID]) AS Employee_ID,
+	(SELECT [FirstName] FROM [dbo].[Employees] AS E
+		WHERE E.[EmployeeID]=A.[EmployeeID]) AS Nombre_Empleado,
+	(SELECT [ProductID] FROM [dbo].[Products] AS F
+		WHERE F.[ProductID]=B.[ProductID]) AS PRODUCT_ID,
+	(SELECT[ProductName] FROM [dbo].[Products] AS G
+		WHERE G.[ProductID]=B.[ProductID]) AS Nombre_Producto,
+	B.[Quantity] AS Cantidad
+FROM [dbo].[Orders] AS A
+	LEFT OUTER JOIN [dbo].[OrderDetails] AS B
+	ON A.OrderID= B.OrderID
