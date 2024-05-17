@@ -1,0 +1,19 @@
+/*Extraer la información que corresponde a los artículos con código 10002 y 10080, acumularlos por mes 
+y presentar el total de unidades vendidas y el monto total de ventas por mes.*/
+
+
+SELECT
+    [StockCode],
+    FORMAT(CAST(InvoiceDate AS DATE), 'yyyy-MM') AS [Month],
+    SUM(Quantity) AS [Total Unidades vendidas],
+    SUM(Quantity * UnitPrice) AS [Total Ventas por mes]
+FROM
+    [dbo].[DB_Online_Retail ]
+WHERE
+    StockCode IN ('10002', '10080')
+GROUP BY
+    [StockCode],
+    FORMAT(CAST(InvoiceDate AS DATE), 'yyyy-MM')
+ORDER BY
+    [StockCode],
+    [Month]
