@@ -1,3 +1,5 @@
+USE [Online Retail]
+GO
 /*Extraer la información que corresponde a los artículos con código 10002 y 10080, acumularlos por mes 
 y presentar el total de unidades vendidas y el monto total de ventas por mes.*/
 
